@@ -57,7 +57,7 @@ Board.prototype.play = function(i, j) {
     this.attempted_suicide = this.in_atari = false;
 
     if (this.board[i][j] != Board.EMPTY) {
-        console.log("board[" + i + "]" + "[" + j + "] != Board.EMPTY");
+        console.log("一直没被执行？");
         return false;
     }
 
