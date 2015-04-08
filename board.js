@@ -56,8 +56,10 @@ Board.prototype.play = function(i, j) {
     console.log("Played at " + i + ", " + j);   
     this.attempted_suicide = this.in_atari = false;
 
-    if (this.board[i][j] != Board.EMPTY)
+    if (this.board[i][j] != Board.EMPTY) {
+        console.log("board[" + i + "]" + "[" + j + "] != Board.EMPTY");
         return false;
+    }
 
     var color = this.board[i][j] = this.current_color;
     var captured = [];
