@@ -56,8 +56,9 @@ Board.prototype.play = function(i, j) {
     console.log("Played at " + i + ", " + j);   
     this.attempted_suicide = this.in_atari = false;
 
+    // 如果该位置不为空，则不能放置棋子
     if (this.board[i][j] != Board.EMPTY) {
-        console.log("一直没被执行？");
+        console.log("位置 " + i + "," + j + " 不为空");
         return false;
     }
 
