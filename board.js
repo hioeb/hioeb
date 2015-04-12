@@ -53,54 +53,38 @@ Board.prototype.end_game = function() {
  * Attempt to place a stone at (i,j). Returns true iff the move was legal
  */
 Board.prototype.play = function(i, j) {
-    console.log("Played at " + i + ", " + j);
+    console.log("Played at " + i + ", " + j);   
     this.attempted_suicide = this.in_atari = false;
 
-    // 如果该位置不为空，则不能放置棋子
     if (this.board[i][j] != Board.EMPTY) {
-        console.log("位置 " + i + "," + j + " 不为空");
         return false;
     }
 
     var color = this.board[i][j] = this.current_color;
     var captured = [];
-    var neighbors = this.get_adjacent_intersections(i, j); // 获得相邻的位置坐标（上下左右）
+    var neighbors = this.get_adjacent_intersections(i, j);
     var atari = false;
 
     var self = this;
     _.each(neighbors, function(n) {
         var state = self.board[n[0]][n[1]];
-        if (state != Board.EMPTY && state != color) { // 如果相邻位置中某个不为空，颜色也与下的棋子不一样-------（1）
+        if (state != Board.EMPTY && state != color) {
             var group = self.get_group(n[0], n[1]);
             console.log(group);
-            if (group["liberties"] == 0) // 自由度为 0，应当从棋盘上去除
+            if (group["liberties"] == 0)
                 captured.push(group);
-            else if (group["liberties"] == 1) // 自由度为 1,受到威胁
+            else if (group["liberties"] == 1)
                 atari = true;
         }
     });
 
     // detect suicide
-    // 如果不存在自由度为零的，二该位置的自由度又为0，那么拒绝自杀行为
     if (_.isEmpty(captured) && this.get_group(i, j)["liberties"] == 0) {
         this.board[i][j] = Board.EMPTY;
         this.attempted_suicide = true;
         return false;
     }
 
-    
-    // 如果存在自由度为 1 的，但与上一次对方吃子的情况相同，则拒绝
-    // var group0 = captured[0];
-    // console.log(captured);
-    // console.log(group0);
-    // var stones0 = group0["stones"];
-    // var stone0 = stones0[0];
-    // var board0 = this.board[stone0[0]][stone0[1]];
-    // if (captured.length == 1 && board0 == this.board[i][j]) {
-    //     console.log("illegal to play");
-    // }
-
-    // 如果存在自由度为零的，那么意味着可以让对方无气，故将可以吃掉的部分置空
     var self = this;
     _.each(captured, function(group) {
         _.each(group["stones"], function(stone) {
@@ -120,9 +104,8 @@ Board.prototype.play = function(i, j) {
  * Given a board position, returns a list of [i,j] coordinates representing
  * orthagonally adjacent intersections
  */
-// 获得相邻的点坐标
 Board.prototype.get_adjacent_intersections = function(i , j) {
-    var neighbors = [];
+    var neighbors = []; 
     if (i > 0)
         neighbors.push([i - 1, j]);
     if (j < this.size - 1)
@@ -145,7 +128,7 @@ Board.prototype.get_adjacent_intersections = function(i , j) {
 Board.prototype.get_group = function(i, j) {
 
     var color = this.board[i][j];
-    if (color == Board.EMPTY) // 事实上，此处的判断，与（1）的 state != Board.EMPTY 有点重复
+    if (color == Board.EMPTY)
         return null;
 
     var visited = {}; // for O(1) lookups
@@ -155,7 +138,7 @@ Board.prototype.get_group = function(i, j) {
 
     while (queue.length > 0) {
         var stone = queue.pop();
-        if (visited[stone]) // 如果未访问，则访问，否则跳过，最简单的方式是通过循环一个个判断
+        if (visited[stone])
             continue;
 
         var neighbors = this.get_adjacent_intersections(stone[0], stone[1]);
@@ -164,7 +147,7 @@ Board.prototype.get_group = function(i, j) {
             var state = self.board[n[0]][n[1]];
             if (state == Board.EMPTY)
                 count++;
-            if (state == color) // 如果颜色相同，则添加入队列
+            if (state == color)
                 queue.push([n[0], n[1]]);
         });
 
