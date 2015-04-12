@@ -87,15 +87,21 @@ Board.prototype.play = function(i, j) {
     }
 
     // 如果存在自由度为 1 的，但与上一次对方吃子的情况相同，则拒绝
-    var group0 = captured[0];
-    console.log(captured);
-    console.log(group0);
-    // var stones0 = group0["stones"];
-    // var stone0 = stones0[0];
-    // var board0 = this.board[stone0[0]][stone0[1]];
-    // if (captured.length == 1 && board0 == this.board[i][j]) {
-    //     console.log("illegal to play");
-    // }
+    // var group0 = captured[0];
+    // console.log(captured);
+    // console.log(group0);
+    // // var stones0 = group0["stones"];
+    // // var stone0 = stones0[0];
+    // // var board0 = this.board[stone0[0]][stone0[1]];
+    // // if (captured.length == 1 && board0 == this.board[i][j]) {
+    // //     console.log("illegal to play");
+    // // }
+    // if (captured.length == 1) {
+    //     var stones0 = group0["stones"];
+    //     var stone0 = stones0[0];
+    //     var board0 = this.board[stone0[0]][stone0[1]];
+    //     this.last_captured = 
+    // } && captured[0]["stones"][0][0])
 
     // 如果存在自由度为零的，那么意味着可以让对方无气，故将可以吃掉的部分置空
     var self = this;
